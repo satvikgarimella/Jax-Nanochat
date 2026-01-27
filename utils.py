@@ -3,9 +3,10 @@ import jax.numpy as jnp
 def create_causal_mask(seq_len):
     """
     Creates a causal attention mask to prevent attending to future tokens.
-    Returns a (seq_len, seq_len) mask where mask[i, j] = 1 if j <= i, else 0.
+    Returns a (seq_len, seq_len) additive mask: 0 for valid positions, -inf for masked.
     """
-    return jnp.tril(jnp.ones((seq_len, seq_len)))
+    mask = jnp.tril(jnp.ones((seq_len, seq_len)))
+    return jnp.where(mask, 0.0, -jnp.inf)
 
 def precompute_rope(seq_len, head_dim, theta=10000.0):
     """

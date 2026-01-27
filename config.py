@@ -9,3 +9,4 @@ class Config:
     n_embd: int = 128          # Embedding dimension
     dropout: float = 0.0       # Regularization
     learning_rate: float = 6e-4
+    
