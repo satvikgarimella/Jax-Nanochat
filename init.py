@@ -13,25 +13,25 @@ def init_params(key, config):
         return jax.random.normal(k, shape) * 0.02
 
     params = {
-        'token_emb': init_weight(k_embed, (config['vocab_size'], config['d_model'])),
+        'token_emb': init_weight(k_embed, (config.vocab_size, config.n_embd)),
         'blocks': [
             {
                 'attn': {
-                    'wq': init_weight(jax.random.fold_in(k_blocks, i*4+0), (config['d_model'], config['d_model'])),
-                    'wk': init_weight(jax.random.fold_in(k_blocks, i*4+1), (config['d_model'], config['d_model'])),
-                    'wv': init_weight(jax.random.fold_in(k_blocks, i*4+2), (config['d_model'], config['d_model'])),
-                    'wo': init_weight(jax.random.fold_in(k_blocks, i*4+3), (config['d_model'], config['d_model'])),
+                    'wq': init_weight(jax.random.fold_in(k_blocks, i*4+0), (config.n_embd, config.n_embd)),
+                    'wk': init_weight(jax.random.fold_in(k_blocks, i*4+1), (config.n_embd, config.n_embd)),
+                    'wv': init_weight(jax.random.fold_in(k_blocks, i*4+2), (config.n_embd, config.n_embd)),
+                    'wo': init_weight(jax.random.fold_in(k_blocks, i*4+3), (config.n_embd, config.n_embd)),
                 },
                 'mlp': {
-                    'w1': init_weight(jax.random.fold_in(k_blocks, i*2+100), (config['d_model'], config['d_model'] * 4)),
-                    'w2': init_weight(jax.random.fold_in(k_blocks, i*2+101), (config['d_model'] * 4, config['d_model'])),
+                    'w1': init_weight(jax.random.fold_in(k_blocks, i*2+100), (config.n_embd, config.n_embd * 4)),
+                    'w2': init_weight(jax.random.fold_in(k_blocks, i*2+101), (config.n_embd * 4, config.n_embd)),
                 },
-                'norm1': jnp.ones((config['d_model'],)),
-                'norm2': jnp.ones((config['d_model'],)),
+                'norm1': jnp.ones((config.n_embd,)),
+                'norm2': jnp.ones((config.n_embd,)),
             }
-            for i in range(config['num_layers'])
+            for i in range(config.n_layer)
         ],
-        'final_norm': jnp.ones((config['d_model'],)),
-        'output_head': init_weight(k_out, (config['d_model'], config['vocab_size']))
+        'final_norm': jnp.ones((config.n_embd,)),
+        'output_head': init_weight(k_out, (config.n_embd, config.vocab_size))
     }
     return params
