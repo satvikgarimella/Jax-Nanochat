@@ -10,3 +10,10 @@ __pycache__/
 # Media outputs
 media/
 
+# Training artifacts
+checkpoints/
+data/
+*.pkl
+
+
+
